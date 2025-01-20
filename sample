@@ -1,0 +1,58 @@
+function renderQuestion() {
+    const questions = JSON.parse(localStorage.getItem("quizQuestions"));
+    const question = questions[i];
+    const container = document.querySelector(".questions-container");
+    container.innerHTML = `
+      <h1 class="question-number">Question ${i+1} of ${questions.length}</h1>
+      <div class="questions">
+        <h2 class="question">${question.question}</h2>
+        <div class="options">
+          ${question.options.map((option, index) => `
+              <input type="radio" name="question${i}" value="${option}" ${getSelectedAnswer(i) === option ? "checked" : ""}>
+              <label for="${option}">${option}</label><br>
+          `).join("")}
+        </div>
+      </div>
+      <button onclick="previousQuestion()" ${i === 0 ? "disabled" : ""}>Previous</button>
+      <button onclick="saveAndContinue()">Submit & Continue</button>
+    `;
+    updateProgressBar()
+  }
+function getSelectedAnswer(index) {
+    const answers = JSON.parse(localStorage.getItem("answers")) || {};
+    return answers[index] || null;
+}
+function saveAndContinue() {
+    const selectedOption = document.querySelector(`input[name="question${i}"]:checked`);
+    if (selectedOption) {
+        saveAnswer(i, selectedOption.value);
+    }
+
+    if (i < 9) {
+        i++;
+        renderQuestion();
+    }
+}
+
+function previousQuestion() {
+    if (i > 0) {
+        i--;
+        renderQuestion();
+    }
+}
+
+function saveAnswer(index, answer) {
+    const answers = JSON.parse(localStorage.getItem("answers")) || {};
+    answers[index] = answer;
+    localStorage.setItem("answers", JSON.stringify(answers));
+}
+document.addEventListener("DOMContentLoaded", () => {
+    renderQuestion();
+});
+
+function updateProgressBar() {
+    const progress = ((index + 1) / totalQuestions) * 100;
+    if (progressBarElement) {
+        progressBarElement.style.width = ${progress}%;
+    }
+}

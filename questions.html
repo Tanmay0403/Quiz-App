@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App - Questions</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/18c32a2ab0.js" crossorigin="anonymous"></script>
+</head>
+
+<body style="background-color: #F5F5F5;">
+    <div class="navbar">
+        <div class="logo">
+            <img src="./Images/techoaathshala_logo.png" alt="" srcset="">
+        </div>
+        <div class="menus">
+            <img src="./Images/profile_picture.png" alt="" srcset="">
+        </div>
+    </div>
+    
+    <div class="questions-container">
+        <h1 class="question-number"></h1>
+        <div class="progress">
+            <div class="progress-bar">
+    
+            </div>
+        </div>
+        <div class="questions">
+            <h2 class="question">1. This Is The Question?</h2>
+            <!-- <p>Supporting Text</p> -->
+            <div class="options">
+                <!-- <ol>
+                <input type="radio" name="option" id="option1"><label for="option1"> Option 1</label><br>
+                <input type="radio" name="option" id="option2"><label for="option2"> Option 2</label><br>
+                <input type="radio" name="option" id="option3"><label for="option3"> Option 3</label><br>
+                <input type="radio" name="option" id="option4"><label for="option4"> Option 4</label><br>
+                </ol> -->
+            </div>            
+        </div>
+
+        <div class="navigation-buttons">
+            <!-- <button onclick = "show()">show</button> -->
+             <button id="previous" onclick="previousQuestion()"><i class="fa-solid fa-arrow-left"></i>Previous</i></button>
+             <button id="next" onclick="nextQuestion()">Submit and Next<i class="fa-solid fa-arrow-right"></i></i></button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
