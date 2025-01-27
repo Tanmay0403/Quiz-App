@@ -393,8 +393,9 @@ input[type="radio"]:checked + label {
     overflow-y: auto;
     scrollbar-width: none;
 }
-.users-rank {
+.other-users{
     display: flex;
+    /* flex-direction: column; */
     font-size: 20px;
     color: #000;
     gap:10px;
@@ -406,10 +407,10 @@ input[type="radio"]:checked + label {
     padding: 20px;
     align-items: center;
     margin-bottom: 20px;
-}
+} 
 .current-users{
     background-color: #FBF1CE;
-    display: flex;
+    display: none;
     font-size: 20px;
     color: #000;
     gap:10px;
@@ -424,10 +425,39 @@ input[type="radio"]:checked + label {
     
 }
 
-.current-user,.user{
+.current-user,.other-user{
     display: flex;
     gap:20px;
 }
-.current-user-rank,.user-rank{
+
+.current-user-rank,.other-user-rank, .current-user-score, .other-user-score{
     font-weight: bold;
 }
+
+.popup-container {
+    position: absolute;
+    right:10px;
+    top:85px;
+    /* top: 0; */
+    /* left: 0; */
+    /* left:50; */
+    /* width: 400px; */
+    /* height: 50px; */
+    /* background-color: white; */
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    /* display: none; */
+    justify-content: center;
+    align-items: center;
+}
+.logout-btn{
+    width: 200px;
+    height: 43px;
+    background-color: #F3BD00;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 100px;
+    border: none;
+}
+.popup-container.hidden {
+    display: none;
+  }

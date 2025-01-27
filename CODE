@@ -1,0 +1,97 @@
+// function renderQuestion() {
+//     const questions = JSON.parse(localStorage.getItem("quizQuestions"));
+//     const question = questions[i];
+//     const questionContainer = document.querySelector(".questions-container");
+//     const questionNumber = document.querySelector(".question-number");
+//     const questionHeading = document.querySelector(".question");
+//     const optionsContainer = document.querySelector(".options");
+
+    // if(i==8)
+    // {
+    //     questionNumber.textContent = `Last 2 Questions Left` ;
+    // }
+    // else if(i==9)
+    // {
+    //     questionNumber.textContent = `Hey this is the Last Question` ;
+    // }
+
+//     else{
+//     questionNumber.textContent = `Question ${i+1} of ${questions.length} ` ;
+//     }
+//     questionHeading.textContent = `${i+1}. ${question.question}`;
+
+//     optionsContainer.innerHTML = "";
+
+//     if (userAnswers[i] !== undefined) {
+//         const radioButtons = optionsContainer.querySelectorAll("input[type='radio']");
+//         radioButtons.forEach(radioButton => {
+//           if (radioButton.value === userAnswers[i]) {
+//             radioButton.checked = true;
+//           }
+//         });
+//       }
+
+
+
+//     question.options.forEach((option, j) =>
+//     {
+//         // const optionElement = document.createElement("div");
+//         const radioInput = document.createElement("input");
+//         const label = document.createElement("label");
+
+//         radioInput.type = "radio";
+//         radioInput.name = "question"+i;
+//         radioInput.value=question.options[j];
+//         radioInput.id = "option" + j;
+
+//         label.textContent = `${j+1}. ${question.options[j]}`;
+//         label.setAttribute("for", radioInput.id);
+
+//         // optionElement.appendChild(radioInput);
+//         // optionElement.appendChild(label);
+//         optionsContainer.appendChild(radioInput);
+//         optionsContainer.appendChild(label);
+
+//         if (userAnswers[i] === option) {
+//             radioInput.checked = true;
+//         }
+
+//         radioInput.addEventListener("change", () => {
+//             // userAnswers[i] = option; // Save the answer
+
+//             question.userAnswer = option;
+//             quizData.questions[i] = question; // Update the question in the array
+//             localStorage.setItem("quizQuestions", JSON.stringify(quizData));
+//         });
+//     });
+
+//     updateProgressBar();
+
+//     console.log(getCurrentUserEmail());
+
+//     var previousBtn = document.getElementById("previous");
+//     previousBtn.style.visibility = i > 0 ? "visible" : "hidden"; 
+//     nextBtn.textContent = i === questions.length - 1 ? "Submit Quiz" : "Submit & Continue->";
+
+// }
+
+
+
+
+    // const questions = loadQuestions();
+    // const shuffled = questions.sort(function(){
+    //     return 0.5 - Math.random();
+    // })
+    // return shuffled.slice(0,10);
+
+
+
+
+       // Attach event listener for radio button
+    //   radioInput.addEventListener("change", () => {
+    //     question.userAnswer = option;
+    //     quizData.questions[i] = question;
+    //     console.log("Updated quizData:", quizData);
+    //     localStorage.setItem("quizQuestions", JSON.stringify(quizData));
+    //   });
+});

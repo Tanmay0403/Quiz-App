@@ -13,7 +13,15 @@
             <img src="./Images/techoaathshala_logo.png" alt="" srcset="">
         </div>
         <div class="menus">
-            <img src="./Images/profile_picture.png" alt="" srcset="">
+            <img src="./Images/profile_picture.png" alt="" srcset="" class="profile-photo">
+        </div>
+
+
+
+        <div class="popup-container" id="popup-container">
+            <div class="popup">
+              <button class="logout-btn" id="logout-btn">Logout</button>
+            </div>
         </div>
     </div>
 
@@ -24,84 +32,58 @@
 
     <div class="top-three">
         <div class="user-rank-second"><h2>#2</h2><img src="./Images/rank_image1.png" alt="" srcset="">
-            <div class="score-display"><h2>Score</h2><p id="second">844</p></div>
+            <div class="score-display"><h2 id="secondName">Score</h2><p id="second">844</p></div>
         </div>
         <div class="user-rank-first"><img src="./Images/rank_image2.png" alt="" srcset="">
-            <div class="score-display"><h2>Score</h2><p id="first">844</p></div>
+            <div class="score-display"><h2 id="firstName">Score</h2><p id="first">844</p></div>
         </div>
         <div class="user-rank-third"><h2>#3</h2><img src="./Images/rank_image3.png" alt="" srcset="">
-            <div class="score-display"><h2>Score</h2><p id="third">844</p></div>
+            <div class="score-display"><h2 id="thirdName">Score</h2><p id="third">844</p></div>
         </div>
     </div>
 
     <div class="user-scores">
-        <!-- defde -->
 
         <div class="current-users">
             <div class="current-user">
-                <div class="current-user-rank">#4</div>
-                <div class="current-user-name">Name</div>
+                <div class="current-user-rank"></div>
+                <div class="current-user-name"></div>
             </div>
-            <div class="current-user-score">400</div>
+            <div class="current-user-score"></div>
          </div>
+         
+         <!-- <div class="other-users"> -->
+            <!-- <div class="other-user"> -->
+                <!-- <div class="other-user-rank"> -->
+                    <!-- #4 -->
+                <!-- </div> -->
+                <!-- <div class="other-user-name"> -->
+                    <!-- Name -->
+                <!-- </div> -->
+            <!-- </div> -->
+            <!-- <div class="other-user-score"> -->
+                <!-- 400 -->
+            <!-- </div> -->
+         <!-- </div> -->
 
-         <div class="users-rank">
-            <div class="user">
-                <div class="user-rank">#4</div>
-                <div class="user-name">Name</div>
-            </div>
-            <div class="user-score">400</div>
-         </div>
+         <!-- <div class="users-rank-container">
+            <div class="users-rank">
+                <div class="user">
+                    <div class="user-rank"></div>
+                    <div class="user-name"></div>
+                </div>
+                <div class="user-score"></div>
+             </div>
+         </div> -->
 
-         <div class="users-rank">
-            <div class="user">
-                <div class="user-rank">#4</div>
-                <div class="user-name">Name</div>
-            </div>
-            <div class="user-score">400</div>
-         </div>
-
-         <div class="users-rank">
-            <div class="user">
-                <div class="user-rank">#4</div>
-                <div class="user-name">Name</div>
-            </div>
-            <div class="user-score">400</div>
-         </div>
-
-         <div class="users-rank">
-            <div class="user">
-                <div class="user-rank">#4</div>
-                <div class="user-name">Name</div>
-            </div>
-            <div class="user-score">400</div>
-         </div>
-
-         <div class="users-rank">
-            <div class="user">
-                <div class="user-rank">#4</div>
-                <div class="user-name">Name</div>
-            </div>
-            <div class="user-score">400</div>
-         </div>
-
-         <div class="users-rank">
-            <div class="user">
-                <div class="user-rank">#4</div>
-                <div class="user-name">Name</div>
-            </div>
-            <div class="user-score">400</div>
-         </div>
+         <div class="other-users-container">
+        </div>
 
          
     </div>
 
     
     <script src="script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            getCurrentUserRank();
-        });
-    </script>
+    
 </body>
 </html>
