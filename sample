@@ -56,3 +56,250 @@ function updateProgressBar() {
         progressBarElement.style.width = ${progress}%;
     }
 }
+
+
+
+
+
+
+
+
+function rankDisplay()
+{
+    sortAndRank();
+    var quizData = getQuizData();
+    var existingQuizIndex;
+    
+    const loggedInUser = getLoggedInUser();
+    if (loggedInUser) 
+    {
+        // Get existing quiz data or initialize an empty array
+        // let quizData = JSON.parse(localStorage.getItem("quizData")) || [];
+
+        // Find if the user has already taken the quiz
+        existingQuizIndex = quizData.findIndex(data => data.email === loggedInUser.email);
+        // console.log(existingQuizIndex);
+    }
+    var currentUserRank = quizData[existingQuizIndex].rank;
+    // console.log(currentUserRank);
+    var rankHeading = document.getElementById("rank-heading");
+    rankHeading.textContent = `Wow You Ranked ${quizData[existingQuizIndex].rank}`;
+    document.getElementById("rank").textContent = `Your Score is: ${quizData[existingQuizIndex].score}`
+
+    //1st Ranker
+    var firstRankerScore = quizData[0].score;
+    var first = document.getElementById("first");
+    var firstName = document.getElementById("firstName");
+    first.textContent = firstRankerScore;
+    firstName.textContent = quizData[0].fullName;
+    
+
+    //2nd Ranker
+    var secondRankerScore = quizData[1].score;
+    var second = document.getElementById("second");
+    var secondName = document.getElementById("secondName");
+    second.textContent = secondRankerScore;
+    secondName.textContent = quizData[1].fullName;
+
+    //3rd Ranker
+    var thirdRankerScore = quizData[2].score;
+    var third = document.getElementById("third");
+    var thirdName = document.getElementById("thirdName");
+    third.textContent = thirdRankerScore;
+    thirdName.textContent = quizData[2].fullName;
+
+    var currentUserDiv = document.querySelector(".current-users");
+    const otherUsersContainer = document.querySelector(".other-users-container");
+
+    currentUserDiv.style.display = "none";
+    let htmlContent = "";
+    
+
+    if(currentUserRank > 3)
+    {
+        var currentUserDiv = document.querySelector(".current-users");
+        currentUserDiv.style.display="flex";
+        var currentUserRankDiv = document.querySelector(".current-user-rank");
+        var currentUserNameDiv = document.querySelector(".current-user-name");
+        var currentUserScoreDiv = document.querySelector(".current-user-score");
+
+        currentUserRankDiv.textContent = `#${currentUserRank}`;
+        currentUserNameDiv.textContent = `${quizData[existingQuizIndex].fullName}`;
+        currentUserScoreDiv.textContent = `${quizData[existingQuizIndex].score}`;
+
+        
+        
+
+
+        if (!otherUsersContainer) {
+            console.error("Error: .other-users-container not found in the DOM.");
+            return; // Important: Exit the function if the container isn't found
+        }
+        /*for(var i=3; i<5 && i < quizData.length; i++)
+        {
+            if(quizData[i].email === quizData[existingQuizIndex].email)
+            {
+                i=i+1;
+            }
+
+            //Creating div other-users
+            var otherUserDivContainer = document.createElement("div");
+            otherUserDivContainer.classList.add("other-users");
+
+            //creating div other-user
+            var otherUser = document.createElement("div");
+            otherUser.classList.add("other-user");
+
+            //Creating div other-user-rank
+            var otherUserRank = document.createElement("div");
+            otherUserRank.classList.add("other-user-rank");
+
+            //Creating div for other-user-name
+            var otherUserName = document.createElement("div");
+            otherUserName.classList.add("other-user-name");
+
+
+            //Creating div for other-user-score
+            var otherUserScore = document.createElement("div");
+            otherUserScore.classList.add("other-user-score");
+
+
+            otherUserRank.textContent = `#${quizData[i].rank}`;
+            otherUserName.textContent = `${quizData[i].fullName}`;
+
+            console.log(quizData[i].rank);
+            console.log(quizData[i].fullName);
+
+            otherUser.appendChild(otherUserRank);
+            otherUser.appendChild(otherUserName);
+
+            otherUserScore.textContent = `${quizData[i].score}`;
+
+            otherUserDivContainer.appendChild(otherUser);
+            otherUserDivContainer.appendChild(otherUserScore);
+
+            otherUserDivContainer.appendChild(otherUser);
+            otherUserDivContainer.appendChild(otherUserScore);
+
+            otherUsersContainer.appendChild(otherUserDivContainer);
+
+        }*/
+
+            for (var i = 3; i<6 && i < quizData.length; i++) {
+                htmlContent += `
+                  <div class="other-users">
+                    <div class="other-user">
+                      <div class="other-user-rank">#${quizData[i].rank}</div>
+                      <div class="other-user-name">${quizData[i].fullName}</div>
+                    </div>
+                    <div class="other-user-score">${quizData[i].score}</div>
+                  </div>
+                `;
+              }
+          
+              // Set the innerHTML of the container
+              otherUsersContainer.innerHTML = htmlContent;
+       
+
+    }
+
+    else
+    {
+        const otherUsersContainer = document.querySelector(".other-users-container");
+
+        if (!otherUsersContainer) {
+            console.error("Error: .other-users-container not found in the DOM.");
+            return; // Important: Exit the function if the container isn't found
+        }
+        /*for(var i=3; i<6 && i < quizData.length; i++)
+        {
+            //Creating div other-users
+            var otherUserDivContainer = document.createElement("div");
+            otherUserDivContainer.classList.add("other-users");
+
+            //creating div other-user
+            var otherUser = document.createElement("div");
+            otherUser.classList.add("other-user");
+
+            //Creating div other-user-rank
+            var otherUserRank = document.createElement("div");
+            otherUserRank.classList.add("other-user-rank");
+
+            //Creating div for other-user-name
+            var otherUserName = document.createElement("div");
+            otherUserName.classList.add("other-user-name");
+
+
+            //Creating div for other-user-score
+            var otherUserScore = document.createElement("div");
+            otherUserScore.classList.add("other-user-score");
+
+
+            otherUserRank.textContent = `#${quizData[i].rank}`;
+            otherUserName.textContent = `${quizData[i].fullName}`;
+
+            console.log(quizData[i].rank);
+            console.log(quizData[i].fullName);
+
+            otherUser.appendChild(otherUserRank);
+            otherUser.appendChild(otherUserName);
+
+            otherUserScore.textContent = `${quizData[i].score}`;
+
+            otherUserDivContainer.appendChild(otherUser);
+            otherUserDivContainer.appendChild(otherUserScore);
+
+            otherUserDivContainer.appendChild(otherUser);
+            otherUserDivContainer.appendChild(otherUserScore);
+
+            otherUsersContainer.appendChild(otherUserDivContainer);
+
+        }*/
+
+            for (var i = 3; i<6 && i < quizData.length; i++) {
+                htmlContent += `
+                  <div class="other-users">
+                    <div class="other-user">
+                      <div class="other-user-rank">#${quizData[i].rank}</div>
+                      <div class="other-user-name">${quizData[i].fullName}</div>
+                    </div>
+                    <div class="other-user-score">${quizData[i].score}</div>
+                  </div>
+                `;
+              }
+          
+              // Set the innerHTML of the container
+              otherUsersContainer.innerHTML = htmlContent;
+    }
+    
+}
+
+
+
+
+
+    // console.log(questions[i].question);
+    /*optionsContainer.innerHTML = "";
+    questions[i].options.forEach((option, j)=>{
+        const radioInput = document.createElement("input");
+        const label = document.createElement("label");
+        radioInput.type = "radio";
+        radioInput.name = "question"+i;
+        radioInput.value = option.id;
+        radioInput.id="option"+j;
+        label.textContent = `${j+1}. ${option.value}`;
+        label.setAttribute("for", radioInput.id);
+        optionsContainer.appendChild(radioInput);
+        optionsContainer.appendChild(label);
+        // if (questions.userAnswer === option) {
+        //     radioInput.checked = true;
+        //   }
+        const prevAnswer = userAnswers[`question${i}`];
+        if (prevAnswer === option.id) {
+        radioInput.checked = true;
+        }
+        
+    })*/
+
+
+

@@ -42,6 +42,16 @@ function validatePassword(password)
     }
     return true;
 }
+function validateFullName(fullName)
+{
+    const fullNameRegex = /^[a-zA-Z\s'.-]{2,50}$/;
+    if(!fullNameRegex.test(fullName))
+    {
+        nameErr.textContent = "Name should not contain any special characters or numbers";
+        return false;
+    }
+    return true;
+}
 function signup() 
 {
     var fullName = document.getElementById("fullName").value;
@@ -57,7 +67,7 @@ function signup()
         emailErr.textContent = "Email is required";
         return;
     }
-    if (!validateEmail(email) || !validatePassword(password)) 
+    if (!validateFullName(fullName) || !validateEmail(email) || !validatePassword(password)) 
     {
         return;
     }
@@ -186,10 +196,10 @@ const defaultQuestions = [
         id: 4,
         question: "Which HTML tag is used to create a hyperlink?",
         options: [
-            { id: 1, value: "<a>" },
-            { id: 2, value: "<link>" },
-            { id: 3, value: "<href>" },
-            { id: 4, value: "<hyperlink>" }
+            { id: 1, value: "&lt;a &gt;" },
+            { id: 2, value: "&lt;link &gt;" },
+            { id: 3, value: "&lt;href &gt;" },
+            { id: 4, value: "&lt;hyperlink &gt;" }
         ],
         answer: 1
     },
@@ -219,10 +229,10 @@ const defaultQuestions = [
         id: 7,
         question: "Which of the following is a semantic HTML tag?",
         options: [
-            { id: 1, value: "<div>" },
-            { id: 2, value: "<span>" },
-            { id: 3, value: "<section>" },
-            { id: 4, value: "<b>" }
+            { id: 1, value: "&lt; div &gt;" },
+            { id: 2, value: "&lt; span &gt;" },
+            { id: 3, value: "&lt; section &gt;" },
+            { id: 4, value: "&lt; b &gt;" }
         ],
         answer: 3
     },
@@ -253,7 +263,7 @@ const defaultQuestions = [
         question: "What is the correct CSS syntax to make all <p> elements bold?",
         options: [
             { id: 1, value: "p {font-weight: bold;}" },
-            { id: 2, value: "<p style='bold;'>" },
+            { id: 2, value: "&lt; p style='bold;' &gt;" },
             { id: 3, value: "p {text-weight: bold;}" },
             { id: 4, value: "p {font-style: bold;}" }
         ],
@@ -274,10 +284,10 @@ const defaultQuestions = [
         id: 12,
         question: "What is the correct syntax to include an external JavaScript file in HTML?",
         options: [
-            { id: 1, value: "<script src='script.js'></script>" },
-            { id: 2, value: "<script href='script.js'></script>" },
-            { id: 3, value: "<js src='script.js'></js>" },
-            { id: 4, value: "<javascript src='script.js'></javascript>" }
+            { id: 1, value: "&lt; script src='script.js'&gt; &lt; /script &gt;" },
+            { id: 2, value: "&lt; script href='script.js'&gt;&lt; /script&gt;" },
+            { id: 3, value: "&lt; js src='script.js'&gt;&lt; /js&gt;" },
+            { id: 4, value: "&lt; javascript src='script.js'&gt;&lt; /javascript&gt;" }
         ],
         answer: 1
     },
@@ -296,10 +306,10 @@ const defaultQuestions = [
         id: 14,
         question: "Which HTML tag is used to define an unordered list?",
         options: [
-            { id: 1, value: "<ul>" },
-            { id: 2, value: "<ol>" },
-            { id: 3, value: "<li>" },
-            { id: 4, value: "<list>" }
+            { id: 1, value: "&lt; ul &gt;" },
+            { id: 2, value: "&lt; ol &gt;" },
+            { id: 3, value: "&lt; li &gt;" },
+            { id: 4, value: "&lt; list &gt;" }
         ],
         answer: 1
     },
@@ -408,24 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
         rankDisplay();
     }
 
-    // const profilePhoto = document.querySelector('.profile-photo');
-    // const popupContainer = document.getElementById('popup-container');
-    // const logoutBtn = document.getElementById('logout-btn');
     
-    // profilePhoto.addEventListener('click', () => {
-    //     popupContainer.style.display = 'flex';
-    // });
-    // profilePhoto.addEventListener('click',()=>{
-    //     if (popupContainer.style.display === 'flex') {
-    //         popupContainer.style.display = 'none';
-    //       }
-    // })
-
-    // logoutBtn.addEventListener('click', () => {
-    // popupContainer.style.display = 'none';
-    // // Logout functionality goes here
-    // logout();
-    // })
 
     const profilePhoto = document.querySelector('.profile-photo');
     const popupContainer = document.getElementById('popup-container');
@@ -480,28 +473,19 @@ function renderQuestion()
         questionNumber.textContent = `Question ${i+1} of ${questions.length}`
     }
     questionHeading.textContent = `${i+1}. ${questions[i].question}`;
-    // console.log(questions[i].question);
-    optionsContainer.innerHTML = "";
-    questions[i].options.forEach((option, j)=>{
-        const radioInput = document.createElement("input");
-        const label = document.createElement("label");
-        radioInput.type = "radio";
-        radioInput.name = "question"+i;
-        radioInput.value = option.id;
-        radioInput.id="option"+j;
-        label.textContent = `${j+1}. ${option.value}`;
-        label.setAttribute("for", radioInput.id);
-        optionsContainer.appendChild(radioInput);
-        optionsContainer.appendChild(label);
-        // if (questions.userAnswer === option) {
-        //     radioInput.checked = true;
-        //   }
-        const prevAnswer = userAnswers[`question${i}`];
-        if (prevAnswer === option.id) {
-        radioInput.checked = true;
-        }
-        
-    })
+    const optionsHTML = questions[i].options.map((option, j) => {
+        const isChecked = userAnswers[`question${i}`] === option.id ? "checked" : "";
+            return `
+                <div class="option">
+                    <input type="radio" name="question${i}" value="${option.id}" id="option${j}" ${isChecked}>
+                    <label for="option${j}">${j + 1}. ${option.value}</label>
+                </div>
+            `;
+        })
+        .join("");
+
+    // Inject options HTML into the container
+    optionsContainer.innerHTML = optionsHTML;
 
     var previousBtn = document.getElementById("previous");
     if(i==0)
@@ -530,60 +514,7 @@ function updateProgressBar()
 }
 
 
-//Next Question Functionality
-/*function nextQuestion() {
-    
-    if (!questions) 
-    {
-        questions = getRandomQuestions();
-    }
 
-    const currentQuestion = questions[i];
-    const options = document.getElementsByName(`question${i}`);
-    let userAnswer = null;
-
-    // Get the user's selected answer
-    for (const option of options) 
-    {
-        if (option.checked) 
-        {
-            userAnswer = parseInt(option.value);
-            break;
-        }
-    }
-
-
-    // Store the user's answer
-    userAnswers[`question${i}`] = userAnswer;
-
-    // Check if the answer is correct and update the score
-    if (userAnswer === currentQuestion.answer) 
-    {
-        if (!currentQuestion.isScored) 
-        {
-            currentQuestion.isScored = true; 
-
-            if (!userAnswers.score) 
-            {
-                userAnswers.score = 0; 
-            }
-            userAnswers.score += 100; 
-        }
-    }
-
-    // Check if it's the last question
-    if (i === questions.length - 1) 
-    {
-        
-        alert("Quiz completed! Your score is: " + userAnswers.score);
-        window.location.href = "leaderboard.html"; // Redirect to leaderboard
-    } else {
-        i++; // Move to the next question
-        renderQuestion(); // Render the next question
-    }
-}*/
-
-// ... (Existing code)
 
 function nextQuestion() {
     if (!questions) {
@@ -600,8 +531,14 @@ function nextQuestion() {
             break;
         }
     }
+    if (userAnswer === null) {
+        // If no answer is selected, show an alert and return early
+        alert("Please select an answer before proceeding to the next question.");
+        return;
+    }
 
     userAnswers[`question${i}`] = userAnswer;
+
 
     if (userAnswer === currentQuestion.answer) {
         if (!currentQuestion.isScored) {
@@ -616,7 +553,7 @@ function nextQuestion() {
     if (i === questions.length - 1) {
         const loggedInUser = getLoggedInUser();
         if (loggedInUser) {
-            // Get existing quiz data or initialize an empty array
+           
             let quizData = JSON.parse(localStorage.getItem("quizData")) || [];
 
             // Find if the user has already taken the quiz
@@ -625,17 +562,17 @@ function nextQuestion() {
             const quizResult = {
                 email: loggedInUser.email,
                 fullName: loggedInUser.fullName,
-                questions: questions.map(q => ({id: q.id, question: q.question})), // Store only relevant question info
+                questions: questions.map(q => ({id: q.id, question: q.question})), 
                 userAnswers: userAnswers,
-                score: userAnswers.score || 0, // Ensure score is always defined
-                // date: new Date().toLocaleDateString()
+                score: userAnswers.score || 0, 
+            
             };
 
             if (existingQuizIndex !== -1) {
-                // Update existing quiz data
+                
                 quizData[existingQuizIndex] = quizResult;
             } else {
-                // Add new quiz data
+                
                 quizData.push(quizResult);
             }
 
@@ -643,7 +580,7 @@ function nextQuestion() {
             alert("Quiz completed! Your score is: " + (userAnswers.score || 0));
             window.location.href = "leaderboard.html";
         } else {
-            alert("No user logged in. Cannot save quiz data."); // Handle the case where no user is logged in
+            alert("No user logged in. Cannot save quiz data."); 
             window.location.href = "index.html";
         }
     } else {
@@ -679,14 +616,7 @@ function sortAndRank()
     // Add rank. Use "dense" ranking to handle ties.
     let rank = 1;
     let previousScore = null;
-    // let rankedQuizData = quizData.map((item, index) => {
-    //     if (previousScore !== item.score) 
-    //     {
-    //         rank = index + 1;
-    //     }
-    //     previousScore = item.score
-    //     return { ...item, rank: rank };
-    // });
+    
 
     let rankedQuizData = quizData.map((item, index) => {
         return { ...item, rank: index + 1 }; // Rank is the position in the sorted list
@@ -743,9 +673,10 @@ function rankDisplay()
     thirdName.textContent = quizData[2].fullName;
 
     var currentUserDiv = document.querySelector(".current-users");
-   
+    const otherUsersContainer = document.querySelector(".other-users-container");
 
     currentUserDiv.style.display = "none";
+    let htmlContent = "";
     
 
     if(currentUserRank > 3)
@@ -760,61 +691,34 @@ function rankDisplay()
         currentUserNameDiv.textContent = `${quizData[existingQuizIndex].fullName}`;
         currentUserScoreDiv.textContent = `${quizData[existingQuizIndex].score}`;
 
-        const otherUsersContainer = document.querySelector(".other-users-container");
+        
+        
+
 
         if (!otherUsersContainer) {
             console.error("Error: .other-users-container not found in the DOM.");
             return; // Important: Exit the function if the container isn't found
         }
-        for(var i=3; i<5 && i < quizData.length; i++)
+        for (var i = 3; i<6 && i < quizData.length; i++) 
         {
             if(quizData[i].email === quizData[existingQuizIndex].email)
             {
                 i=i+1;
             }
-
-            //Creating div other-users
-            var otherUserDivContainer = document.createElement("div");
-            otherUserDivContainer.classList.add("other-users");
-
-            //creating div other-user
-            var otherUser = document.createElement("div");
-            otherUser.classList.add("other-user");
-
-            //Creating div other-user-rank
-            var otherUserRank = document.createElement("div");
-            otherUserRank.classList.add("other-user-rank");
-
-            //Creating div for other-user-name
-            var otherUserName = document.createElement("div");
-            otherUserName.classList.add("other-user-name");
-
-
-            //Creating div for other-user-score
-            var otherUserScore = document.createElement("div");
-            otherUserScore.classList.add("other-user-score");
-
-
-            otherUserRank.textContent = `#${quizData[i].rank}`;
-            otherUserName.textContent = `${quizData[i].fullName}`;
-
-            console.log(quizData[i].rank);
-            console.log(quizData[i].fullName);
-
-            otherUser.appendChild(otherUserRank);
-            otherUser.appendChild(otherUserName);
-
-            otherUserScore.textContent = `${quizData[i].score}`;
-
-            otherUserDivContainer.appendChild(otherUser);
-            otherUserDivContainer.appendChild(otherUserScore);
-
-            otherUserDivContainer.appendChild(otherUser);
-            otherUserDivContainer.appendChild(otherUserScore);
-
-            otherUsersContainer.appendChild(otherUserDivContainer);
-
+            htmlContent += `
+                  <div class="other-users">
+                    <div class="other-user">
+                      <div class="other-user-rank">#${quizData[i].rank}</div>
+                      <div class="other-user-name">${quizData[i].fullName}</div>
+                    </div>
+                    <div class="other-user-score">${quizData[i].score}</div>
+                  </div>
+                `;
         }
+          
+              // Set the innerHTML of the container
+              otherUsersContainer.innerHTML = htmlContent;
+       
 
     }
 
@@ -826,50 +730,20 @@ function rankDisplay()
             console.error("Error: .other-users-container not found in the DOM.");
             return; // Important: Exit the function if the container isn't found
         }
-        for(var i=3; i<6 && i < quizData.length; i++)
-        {
-            //Creating div other-users
-            var otherUserDivContainer = document.createElement("div");
-            otherUserDivContainer.classList.add("other-users");
-
-            //creating div other-user
-            var otherUser = document.createElement("div");
-            otherUser.classList.add("other-user");
-
-            //Creating div other-user-rank
-            var otherUserRank = document.createElement("div");
-            otherUserRank.classList.add("other-user-rank");
-
-            //Creating div for other-user-name
-            var otherUserName = document.createElement("div");
-            otherUserName.classList.add("other-user-name");
-
-
-            //Creating div for other-user-score
-            var otherUserScore = document.createElement("div");
-            otherUserScore.classList.add("other-user-score");
-
-
-            otherUserRank.textContent = `#${quizData[i].rank}`;
-            otherUserName.textContent = `${quizData[i].fullName}`;
-
-            console.log(quizData[i].rank);
-            console.log(quizData[i].fullName);
-
-            otherUser.appendChild(otherUserRank);
-            otherUser.appendChild(otherUserName);
-
-            otherUserScore.textContent = `${quizData[i].score}`;
-
-            otherUserDivContainer.appendChild(otherUser);
-            otherUserDivContainer.appendChild(otherUserScore);
-
-            otherUserDivContainer.appendChild(otherUser);
-            otherUserDivContainer.appendChild(otherUserScore);
-
-            otherUsersContainer.appendChild(otherUserDivContainer);
-
-        }
+            for (var i = 3; i<6 && i < quizData.length; i++) {
+                htmlContent += `
+                  <div class="other-users">
+                    <div class="other-user">
+                      <div class="other-user-rank">#${quizData[i].rank}</div>
+                      <div class="other-user-name">${quizData[i].fullName}</div>
+                    </div>
+                    <div class="other-user-score">${quizData[i].score}</div>
+                  </div>
+                `;
+              }
+          
+              // Set the innerHTML of the container
+              otherUsersContainer.innerHTML = htmlContent;
     }
     
 }
