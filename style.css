@@ -239,6 +239,9 @@ button{
     border-radius: 100px;
     border: none;
 }
+
+/*Question Page*/
+
 .questions-container{
     margin-left: 40px;
     margin-top: 30px;
@@ -325,12 +328,8 @@ input[type="radio"]:checked + label {
 }
 
 
-/* .selected-option {
-    background-color: yellow;
-    border-radius: 5px;
-    padding: 5px;
-} */
 
+/*Leaderboard CSS*/
 .rank-container{
     text-align: center;
     margin-top: 20px;

@@ -15,9 +15,9 @@ function saveUsers(users)
 }
 
 
-var nameErr = document.getElementById("nameErr");
-var emailErr = document.getElementById("emailErr");
-var passwordErr = document.getElementById("passwordErr");
+var nameErr = document.getElementById("name-err");
+var emailErr = document.getElementById("email-err");
+var passwordErr = document.getElementById("password-err");
 
 function validateEmail(email) 
 {
@@ -87,14 +87,22 @@ function login()
 {
     var email = document.getElementById("emailId").value;
     var password = document.getElementById("password").value;
+    if(email==="admin@gmail.com" && password==="admin")
+    {
+        alert("Admin Login Successfull");
+        window.location.href="./Admin Panel/dashboard.html";
+    }
 
     if (email === "" || password === "") 
     {
-        alert("Email and Password are required");
+        // alert("Email and Password are required");
+        passwordErr.textContent = "Password is required";
+        emailErr.textContent = "Email is required";
         return;
     }
 
     if (!validateEmail(email) || !validatePassword(password)) 
+    // if (!validateEmail(email))
     {
         return;
     }
@@ -124,6 +132,8 @@ function login()
         { 
             alert("Invalid Email or Password");
         }
+
+        
     }
 } 
 
@@ -562,9 +572,17 @@ function nextQuestion() {
             const quizResult = {
                 email: loggedInUser.email,
                 fullName: loggedInUser.fullName,
-                questions: questions.map(q => ({id: q.id, question: q.question})), 
-                userAnswers: userAnswers,
+                //questions: questions.map(q => ({id: q.id, question: q.question})), 
+                //userAnswers: userAnswers,
+                questionsAnswered: questions.map((question, index) => ({
+                    question: question.question,
+                    // selectedAnswer: question.options.find(option => option.id === userAnswers[`question${index}`]),
+                    selectedAnswer: userAnswers[`question${index}`],
+                    correctAnswer: question.options[question.answer - 1].id,
+                    
+                })),
                 score: userAnswers.score || 0, 
+                date: new Date().toISOString().split('T')[0],
             
             };
 
@@ -615,7 +633,7 @@ function sortAndRank()
   
     // Add rank. Use "dense" ranking to handle ties.
     let rank = 1;
-    let previousScore = null;
+    // let previousScore = null;
     
 
     let rankedQuizData = quizData.map((item, index) => {
@@ -623,7 +641,7 @@ function sortAndRank()
     });
   
     localStorage.setItem("quizData", JSON.stringify(rankedQuizData));
-    // return rankedQuizData;
+    return rankedQuizData;
 }
 
 
@@ -637,9 +655,6 @@ function rankDisplay()
     const loggedInUser = getLoggedInUser();
     if (loggedInUser) 
     {
-        // Get existing quiz data or initialize an empty array
-        // let quizData = JSON.parse(localStorage.getItem("quizData")) || [];
-
         // Find if the user has already taken the quiz
         existingQuizIndex = quizData.findIndex(data => data.email === loggedInUser.email);
         // console.log(existingQuizIndex);
@@ -681,7 +696,7 @@ function rankDisplay()
 
     if(currentUserRank > 3)
     {
-        var currentUserDiv = document.querySelector(".current-users");
+        // var currentUserDiv = document.querySelector(".current-users");
         currentUserDiv.style.display="flex";
         var currentUserRankDiv = document.querySelector(".current-user-rank");
         var currentUserNameDiv = document.querySelector(".current-user-name");
