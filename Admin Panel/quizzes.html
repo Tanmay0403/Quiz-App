@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="questions-container">
-                    <table id = "questions-table">
+                    <table id = "questions-table" class="quiz-table">
                         <thead>
                             <tr>
                                 <th class="index">Sr No</th>
@@ -149,6 +149,50 @@
                 </div>
              </div>
 
+             <!-- Edit Question Popup -->
+             <div class="edit-question-popup">
+                <div class="option-heading">
+                    <h3>Edit Question</h3>
+                    <div class="cross"><h5>X</h5></div>
+                </div>
+                
+                <div class="question-container">
+                    <label for="edit-question"><b>Question</b><span id = "required">*</span> </label>
+                    <input type="text" name="question" id="edit-question">
+                    <label for="edit-option1"><b>Option1</b><span id = "required">*</span> </label>
+                    <input type="text" name="edit-option1" id="edit-option1">
+                    <label for="edit-option2"><b>Option2</b><span id = "required">*</span> </label>
+                    <input type="text" name="edit-option2" id="edit-option2">
+                    <label for="edit-option3"><b>Option3</b><span id = "required">*</span> </label>
+                    <input type="text" name="edit-option3" id="edit-option3">
+                    <label for="edit-option4"><b>Option4</b><span id = "required">*</span> </label>
+                    <input type="text" name="edit-option4" id="edit-option4">
+                    <label for="edit-correct-option"><b>Correct Option</b></label>
+                    <select name="edit-correct-option" id="edit-correct-option">
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                        <option value="4">Option 4</option>
+                    </select>
+                </div>
+
+                <div class="submit-button">
+                    <button id="edit-btn" onclick="editQuestion()">Submit</button>
+                </div>
+             </div>
+
+
+             <!-- delete popup -->
+
+             <div class="delete-popup">
+                <img src="/Images/warning.png" alt="" srcset="">
+                <h2>Are You Sure?</h2>
+                <p>You won't be able to revert this!</p>
+                <div class="buttons">
+                    <button id="delete" onclick="deleteQuestion()">Delete</button>
+                    <button id="cancel" onclick="cancelDeletion()">Cancel</button>
+                </div>
+             </div>
              
 
         </section>

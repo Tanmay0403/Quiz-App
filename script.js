@@ -54,6 +54,9 @@ function validateFullName(fullName)
 }
 function signup() 
 {
+    nameErr.textContent = "";
+    passwordErr.textContent = "";
+    emailErr.textContent = ""
     var fullName = document.getElementById("fullName").value;
     var email = document.getElementById("emailId").value;
     var password = document.getElementById("password").value;
@@ -62,9 +65,9 @@ function signup()
     if (fullName === "" || email === "" || password === "") 
     {
         // alert("Please Fill Required Fields");
-        nameErr.textContent = "Name is required";
-        passwordErr.textContent = "Password is required";
-        emailErr.textContent = "Email is required";
+        if(fullName==="") nameErr.textContent = "Name is required";
+        if(password==="") passwordErr.textContent = "Password is required";
+        if(email==="") emailErr.textContent = "Email is required";
         return;
     }
     if (!validateFullName(fullName) || !validateEmail(email) || !validatePassword(password)) 
@@ -91,6 +94,7 @@ function login()
     {
         alert("Admin Login Successfull");
         window.location.href="./Admin Panel/dashboard.html";
+        return;
     }
 
     if (email === "" || password === "") 
@@ -427,6 +431,22 @@ document.addEventListener("DOMContentLoaded", () => {
     {
         rankDisplay();
     }
+    if(window.location.pathname === '/index.html')
+    {
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                login();
+            }
+        });
+    }
+    if(window.location.pathname === '/signup.html')
+        {
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    signup();
+                }
+            });
+        }
 
     
 
@@ -526,6 +546,101 @@ function updateProgressBar()
 
 
 
+// function nextQuestion() {
+//     if (!questions) {
+//         questions = getRandomQuestions();
+//     }
+
+//     const currentQuestion = questions[i];
+//     const options = document.getElementsByName(`question${i}`);
+//     let userAnswer = null;
+
+//     for (const option of options) {
+//         if (option.checked) {
+//             userAnswer = parseInt(option.value);
+//             break;
+//         }
+//     }
+//     if (userAnswer === null) {
+//         // If no answer is selected, show an alert and return early
+//         alert("Please select an answer before proceeding to the next question.");
+//         return;
+//     }
+
+//     userAnswers[`question${i}`] = userAnswer;
+
+//     // var totalCorrectAnswer = 0;
+//     if (userAnswer === currentQuestion.answer) {
+//         if (!currentQuestion.isScored) {
+//             currentQuestion.isScored = true;
+//             if (!userAnswers.score) {
+//                 userAnswers.score = 0;
+//             }
+//             userAnswers.score += 100;
+//             // totalCorrectAnswer++;
+//         }
+//     }
+
+//     if (i === questions.length - 1) {
+//         const loggedInUser = getLoggedInUser();
+//         if (loggedInUser) {
+           
+//             let quizData = JSON.parse(localStorage.getItem("quizData")) || [];
+
+//             // Find if the user has already taken the quiz
+//             const existingQuizIndex = quizData.findIndex(data => data.email === loggedInUser.email);
+
+//             const quizResult = {
+//                 email: loggedInUser.email,
+//                 fullName: loggedInUser.fullName,
+//                 //questions: questions.map(q => ({id: q.id, question: q.question})), 
+//                 //userAnswers: userAnswers,
+//                 questionsAnswered: questions.map((question, index) => ({
+//                     question: question.question,
+//                     options: question.options,
+//                     // selectedAnswer: question.options.find(option => option.id === userAnswers[`question${index}`]),
+//                     selectedAnswer: userAnswers[`question${index}`],
+//                     correctAnswer: question.options[question.answer - 1].id,
+                    
+                    
+//                 })),
+//                 score: userAnswers.score || 0, 
+//                 date: new Date().toISOString().split('T')[0],
+//                 attempts: existingQuizIndex!== -1? quizData[existingQuizIndex].attempts + 1: 1,
+//                 totalCorrectAnswer: totalCorrectAnswer,
+            
+//             };
+
+//             // if (existingQuizIndex !== -1) {
+                
+//                 // quizData[existingQuizIndex] = quizResult;
+//             // } else {
+                
+//                 quizData.push(quizResult);
+//             // }
+
+//             localStorage.setItem("quizData", JSON.stringify(quizData));
+//             alert("Quiz completed! Your score is: " + (userAnswers.score || 0));
+//             window.location.href = "leaderboard.html";
+//         } else {
+//             alert("No user logged in. Cannot save quiz data."); 
+//             window.location.href = "index.html";
+//         }
+//     } else {
+//         i++;
+//         renderQuestion();
+//     }
+// }
+
+
+
+
+
+
+
+
+
+
 function nextQuestion() {
     if (!questions) {
         questions = getRandomQuestions();
@@ -541,14 +656,13 @@ function nextQuestion() {
             break;
         }
     }
+
     if (userAnswer === null) {
-        // If no answer is selected, show an alert and return early
         alert("Please select an answer before proceeding to the next question.");
         return;
     }
 
     userAnswers[`question${i}`] = userAnswer;
-
 
     if (userAnswer === currentQuestion.answer) {
         if (!currentQuestion.isScored) {
@@ -561,51 +675,64 @@ function nextQuestion() {
     }
 
     if (i === questions.length - 1) {
-        const loggedInUser = getLoggedInUser();
+        const loggedInUser = getLoggedInUser(); // Make sure this function is defined and working correctly.  It should return the logged in user object or null.
         if (loggedInUser) {
-           
             let quizData = JSON.parse(localStorage.getItem("quizData")) || [];
 
-            // Find if the user has already taken the quiz
-            const existingQuizIndex = quizData.findIndex(data => data.email === loggedInUser.email);
+            let existingUser = quizData.find(data => data.email === loggedInUser.email);
+
+            const totalNoOfCorrectAnswers = questions.reduce((acc, question, index) => {
+                if (userAnswers[`question${index}`] === question.answer) {
+                    acc += 1;
+                }
+                return acc;
+            }, 0);
 
             const quizResult = {
-                email: loggedInUser.email,
-                fullName: loggedInUser.fullName,
-                //questions: questions.map(q => ({id: q.id, question: q.question})), 
-                //userAnswers: userAnswers,
+                name: loggedInUser.fullName,
+                score: userAnswers.score || 0,
+                date: new Date().toISOString().split('T')[0], // Consistent date format
                 questionsAnswered: questions.map((question, index) => ({
                     question: question.question,
-                    // selectedAnswer: question.options.find(option => option.id === userAnswers[`question${index}`]),
                     selectedAnswer: userAnswers[`question${index}`],
-                    correctAnswer: question.options[question.answer - 1].id,
-                    
+                    correctAnswer: question.answer,
+                    options: question.options.reduce((acc, option) => {
+                        acc[option.id] = option.value;
+                        return acc;
+                    }, {})
                 })),
-                score: userAnswers.score || 0, 
-                date: new Date().toISOString().split('T')[0],
-            
+                totalNoOfCorrectAnswers: totalNoOfCorrectAnswers
             };
 
-            if (existingQuizIndex !== -1) {
-                
-                quizData[existingQuizIndex] = quizResult;
+            if (existingUser) {
+                existingUser.noOfTests += 1;
+                existingUser.tests.push(quizResult);
             } else {
-                
-                quizData.push(quizResult);
+                existingUser = {
+                    fullName: loggedInUser.fullName,
+                    email: loggedInUser.email,
+                    noOfTests: 1,
+                    tests: [quizResult]
+                };
+                quizData.push(existingUser);
             }
 
             localStorage.setItem("quizData", JSON.stringify(quizData));
             alert("Quiz completed! Your score is: " + (userAnswers.score || 0));
-            window.location.href = "leaderboard.html";
+            window.location.href = "leaderboard.html"; // Make sure this path is correct
         } else {
-            alert("No user logged in. Cannot save quiz data."); 
-            window.location.href = "index.html";
+            alert("No user logged in. Cannot save quiz data.");
+            window.location.href = "index.html"; // Make sure this path is correct
         }
     } else {
         i++;
-        renderQuestion();
+        renderQuestion(); // Make sure this function is defined and working correctly
     }
 }
+
+
+
+
 //Function to get quizdata from localstorage
 function getQuizData()
 {
@@ -625,26 +752,87 @@ function previousQuestion()
 }
 
 
-function sortAndRank() 
-{
-    // Sort by score descending
-    var quizData = getQuizData();
-    quizData.sort((a, b) => b.score - a.score);
+// function sortAndRank() 
+// {
+//     // Sort by score descending
+//     var quizData = getQuizData();
+//     quizData.tests.sort((a, b) => b.score - a.score);
   
-    // Add rank. Use "dense" ranking to handle ties.
-    let rank = 1;
-    // let previousScore = null;
+//     // Add rank. Use "dense" ranking to handle ties.
+//     let rank = 1;
+//     // let previousScore = null;
     
 
-    let rankedQuizData = quizData.map((item, index) => {
-        return { ...item, rank: index + 1 }; // Rank is the position in the sorted list
-    });
+//     let rankedQuizData = quizData.map((item, index) => {
+//         return { ...item, rank: index + 1 }; // Rank is the position in the sorted list
+//     });
   
-    localStorage.setItem("quizData", JSON.stringify(rankedQuizData));
-    return rankedQuizData;
+//     localStorage.setItem("quizData", JSON.stringify(rankedQuizData));
+//     return rankedQuizData;
+// }
+
+
+
+
+// function sortAndRank() {
+//     const quizData = JSON.parse(localStorage.getItem("quizData")) || [];
+
+//     // Sort users by their highest score.  We need to find the highest score for each user first.
+//     const rankedUsers = quizData.map(user => {
+//         const highestScore = user.tests.reduce((max, test) => Math.max(max, test.score), 0);
+//         return { ...user, highestScore: highestScore };
+//     }).sort((a, b) => b.highestScore - a.highestScore);
+
+//     // Add rank. Use "dense" ranking to handle ties.
+//     let rank = 1;
+//     let previousScore = null;
+
+//     const rankedQuizData = rankedUsers.map((user, index) => {
+//         if (user.highestScore !== previousScore) {
+//             rank = index + 1; // New rank if score changes
+//         }
+//         previousScore = user.highestScore;
+//         return { ...user, rank: rank };
+//     });
+
+//     localStorage.setItem("rankedQuizData", JSON.stringify(rankedQuizData)); // Store separately for ranking
+//     return rankedQuizData;
+// }
+
+
+
+
+
+
+
+function sortAndRank() {
+    let quizData = JSON.parse(localStorage.getItem("quizData")) || [];
+
+    // Sort users by their latest score.
+    const rankedUsers = quizData.map(user => {
+        const latestScore = user.tests.length > 0 ? user.tests[user.tests.length - 1].score : 0;
+        return { ...user, latestScore: latestScore };
+    }).sort((a, b) => b.latestScore - a.latestScore);
+
+    // Add rank.  Increment rank for *each* user, even if scores are tied.
+    let rank = 1;
+
+    const updatedQuizData = rankedUsers.map(user => {
+        const latestScore = user.tests.length > 0 ? user.tests[user.tests.length - 1].score : 0;
+
+        const currentUser = {
+            ...user,
+            latestScore: latestScore,
+            rank: rank // Assign the current rank
+        };
+
+        rank++; // Increment rank for the next user (regardless of score)
+        return currentUser;
+    });
+
+    localStorage.setItem("quizData", JSON.stringify(updatedQuizData));
+    return updatedQuizData;
 }
-
-
 
 function rankDisplay()
 {
@@ -663,10 +851,10 @@ function rankDisplay()
     // console.log(currentUserRank);
     var rankHeading = document.getElementById("rank-heading");
     rankHeading.textContent = `Wow You Ranked ${quizData[existingQuizIndex].rank}`;
-    document.getElementById("rank").textContent = `Your Score is: ${quizData[existingQuizIndex].score}`
+    document.getElementById("rank").textContent = `Your Score is: ${quizData[existingQuizIndex].latestScore}`
 
     //1st Ranker
-    var firstRankerScore = quizData[0].score;
+    var firstRankerScore = quizData[0].latestScore;
     var first = document.getElementById("first");
     var firstName = document.getElementById("firstName");
     first.textContent = firstRankerScore;
@@ -674,14 +862,14 @@ function rankDisplay()
     
 
     //2nd Ranker
-    var secondRankerScore = quizData[1].score;
+    var secondRankerScore = quizData[1].latestScore;
     var second = document.getElementById("second");
     var secondName = document.getElementById("secondName");
     second.textContent = secondRankerScore;
     secondName.textContent = quizData[1].fullName;
 
     //3rd Ranker
-    var thirdRankerScore = quizData[2].score;
+    var thirdRankerScore = quizData[2].latestScore;
     var third = document.getElementById("third");
     var thirdName = document.getElementById("thirdName");
     third.textContent = thirdRankerScore;
@@ -704,7 +892,7 @@ function rankDisplay()
 
         currentUserRankDiv.textContent = `#${currentUserRank}`;
         currentUserNameDiv.textContent = `${quizData[existingQuizIndex].fullName}`;
-        currentUserScoreDiv.textContent = `${quizData[existingQuizIndex].score}`;
+        currentUserScoreDiv.textContent = `${quizData[existingQuizIndex].latestScore}`;
 
         
         
@@ -726,7 +914,7 @@ function rankDisplay()
                       <div class="other-user-rank">#${quizData[i].rank}</div>
                       <div class="other-user-name">${quizData[i].fullName}</div>
                     </div>
-                    <div class="other-user-score">${quizData[i].score}</div>
+                    <div class="other-user-score">${quizData[i].latestScore}</div>
                   </div>
                 `;
         }
@@ -752,7 +940,7 @@ function rankDisplay()
                       <div class="other-user-rank">#${quizData[i].rank}</div>
                       <div class="other-user-name">${quizData[i].fullName}</div>
                     </div>
-                    <div class="other-user-score">${quizData[i].score}</div>
+                    <div class="other-user-score">${quizData[i].latestScore}</div>
                   </div>
                 `;
               }
